@@ -1,13 +1,12 @@
 "use client";
 
-import { generateMnemonic, mnemonicToSeedSync } from "bip39";
+import { generateMnemonic } from "bip39";
 
 function GenerateSeed() {
   function handleClick() {
     const mnemonic = generateMnemonic();
-    console.log("Generated Mnemonic:", mnemonic);
-    const seed = mnemonicToSeedSync(mnemonic);
-    console.log(seed);
+    localStorage.setItem("mnemonic", mnemonic);
+    window.location.reload();
   }
   return (
     <div className=" flex flex-col gap-2">

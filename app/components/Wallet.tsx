@@ -3,11 +3,17 @@
 import React, { useState } from "react";
 import { FaTrash, FaEye, FaEyeSlash } from "react-icons/fa";
 
-const Wallet = () => {
+interface Wallet {
+  publicKey: string;
+  privateKey: string;
+  mnemonic: string;
+  path: string;
+}
+
+const Wallet = ({ wallet }: { wallet: Wallet }) => {
   const [isPrivateKeyVisible, setIsPrivateKeyVisible] = useState(false);
 
-  const publicKey = "5vjK9R2XfcBDPKT5PCWuxTuEhr3WS2Fc7QsxCggPrFQB";
-  const privateKey = "P5w2JfBd12pxsdWbfjt29x0rty47XbwkfjgW29lkhs";
+  const { publicKey, privateKey } = wallet;
 
   return (
     <div className="bg-black text-white rounded-lg shadow-lg mx-auto w-full border border-gray-700 pt-5">
@@ -33,7 +39,7 @@ const Wallet = () => {
           </button>
         </div>
         <p className="text-sm break-all">
-          {isPrivateKeyVisible ? privateKey : "•".repeat(privateKey.length)}
+          {isPrivateKeyVisible ? privateKey : "•".repeat(privateKey?.length)}
         </p>
       </div>
     </div>
