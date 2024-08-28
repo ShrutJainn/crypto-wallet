@@ -10,7 +10,15 @@ interface Wallet {
   path: string;
 }
 
-const Wallet = ({ wallet }: { wallet: Wallet }) => {
+const Wallet = ({
+  wallet,
+  walletNumber,
+  deleteWallet,
+}: {
+  wallet: Wallet;
+  walletNumber: number;
+  deleteWallet: (wallet: Wallet) => void;
+}) => {
   const [isPrivateKeyVisible, setIsPrivateKeyVisible] = useState(false);
 
   const { publicKey, privateKey } = wallet;
@@ -18,8 +26,11 @@ const Wallet = ({ wallet }: { wallet: Wallet }) => {
   return (
     <div className="bg-black text-white rounded-lg shadow-lg mx-auto w-full border border-gray-700 pt-5">
       <div className="flex justify-between items-center mb-4 px-3">
-        <h2 className="text-lg font-semibold">Wallet 1</h2>
-        <button className="text-red-500 hover:text-red-700">
+        <h2 className="text-lg font-semibold">Wallet {walletNumber}</h2>
+        <button
+          className="text-red-500 hover:text-red-700"
+          onClick={() => deleteWallet(wallet)}
+        >
           <FaTrash />
         </button>
       </div>

@@ -84,8 +84,23 @@ function Dashboard() {
   }
 
   function addWallet() {
-    let mnemonic = mnemonicInput.trim();
+    let mnemonic = localStorage.getItem("mnemonic");
+    if (!mnemonic) return console.log("No mnemonic found");
 
+    const wallet = generateKeys("501", mnemonic, wallets.length);
+
+    if (wallet) {
+      const updatedWallets = [...wallets, wallet];
+      setWallets(updatedWallets);
+      localStorage.setItem("wallets", JSON.stringify(updatedWallets));
+      localStorage.setItem("path-types", "501");
+      setVisiblePrivateKeys([...visiblePrivateKeys, false]);
+      setVisiblePhrases([...visiblePhrases, false]);
+    }
+  }
+
+  function generateWallet() {
+    let mnemonic = localStorage.getItem("mnemonic");
     if (mnemonic) {
       if (!validateMnemonic(mnemonic)) {
         console.log("Invalid mnemonic");
@@ -98,8 +113,7 @@ function Dashboard() {
     const words = mnemonic.split(" ");
     setMnemonicWords(words);
 
-    const wallet = generateKeys("501", mnemonicWords.join(" "), wallets.length);
-
+    const wallet = generateKeys("501", mnemonic, wallets.length);
     if (wallet) {
       const updatedWallets = [...wallets, wallet];
       setWallets(updatedWallets);
@@ -108,6 +122,19 @@ function Dashboard() {
       setVisiblePrivateKeys([...visiblePrivateKeys, false]);
       setVisiblePhrases([...visiblePhrases, false]);
     }
+  }
+
+  function handleDeleteWallet(wallet: Wallet) {
+    const updatedWallets = wallets.filter(
+      (w) => w.publicKey !== wallet.publicKey
+    );
+    setWallets(updatedWallets);
+    localStorage.setItem("wallets", JSON.stringify(updatedWallets));
+  }
+
+  function handleClearWallets() {
+    setWallets([]);
+    localStorage.setItem("wallets", "");
   }
 
   return (
@@ -122,12 +149,28 @@ function Dashboard() {
           >
             Add Wallet
           </button>
-          <button className=" bg-red-600 p-3 rounded-lg">Clear Wallets</button>
+          <button
+            className=" bg-red-600 p-3 rounded-lg"
+            onClick={handleClearWallets}
+          >
+            Clear Wallets
+          </button>
         </div>
       </div>
-      {wallets.map((wallet) => {
-        return <Wallet key={wallet.publicKey} wallet={wallet} />;
-      })}
+      {wallets.length !== 0 ? (
+        wallets.map((wallet, i) => {
+          return (
+            <Wallet
+              key={wallet.publicKey}
+              wallet={wallet}
+              walletNumber={i + 1}
+              deleteWallet={handleDeleteWallet}
+            />
+          );
+        })
+      ) : (
+        <h1>No wallets to show.</h1>
+      )}
     </div>
   );
 }
