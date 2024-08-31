@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/NavBar";
-import RecoilContextProvider from "./lib/RecoilContextProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +19,30 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <RecoilContextProvider>
-          <div className=" px-32 py-9">
-            <NavBar />
-            {children}
-          </div>
-        </RecoilContextProvider>
+        <div className=" px-32 py-9">
+          <NavBar />
+          <Toaster
+            position="bottom-right"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 5000,
+              },
+              style: {
+                fontSize: "16px",
+                maxWidth: "500px",
+                padding: "16px 24px",
+                backgroundColor: "gray",
+                color: "white",
+              },
+            }}
+          />
+          {children}
+        </div>
       </body>
     </html>
   );
