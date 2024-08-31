@@ -38,7 +38,9 @@ const Dropdown = () => {
           </div>
           <button
             className=" ml-7 mt-5 text-slate-500"
-            onClick={() => navigator.clipboard.writeText(secretPhrase)}
+            onClick={() => {
+              if (secretPhrase) navigator.clipboard.writeText(secretPhrase);
+            }}
           >
             Copy to clipboard
           </button>
