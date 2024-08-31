@@ -1,3 +1,5 @@
+"use client";
+
 import Dropdown from "./Dropdown";
 import Wallet from "./Wallet";
 import nacl from "tweetnacl";
@@ -85,7 +87,8 @@ function Dashboard() {
   }
 
   function addWallet() {
-    let mnemonic = localStorage.getItem("mnemonic");
+    let mnemonic =
+      typeof window !== "undefined" && localStorage.getItem("mnemonic");
     if (!mnemonic) return toast.error("No mnemonic found");
 
     const wallet = generateKeys("501", mnemonic, wallets.length);
@@ -93,8 +96,10 @@ function Dashboard() {
     if (wallet) {
       const updatedWallets = [...wallets, wallet];
       setWallets(updatedWallets);
-      localStorage.setItem("wallets", JSON.stringify(updatedWallets));
-      localStorage.setItem("path-types", "501");
+      typeof window !== "undefined" &&
+        localStorage.setItem("wallets", JSON.stringify(updatedWallets));
+      typeof window !== "undefined" &&
+        localStorage.setItem("path-types", "501");
       setVisiblePrivateKeys([...visiblePrivateKeys, false]);
       setVisiblePhrases([...visiblePhrases, false]);
     }
@@ -119,12 +124,14 @@ function Dashboard() {
     if (wallet) {
       const updatedWallets = [...wallets, wallet];
       setWallets(updatedWallets);
-      localStorage.setItem("wallets", JSON.stringify(updatedWallets));
-      localStorage.setItem("path-types", "501");
+      typeof window !== "undefined" &&
+        localStorage.setItem("wallets", JSON.stringify(updatedWallets));
+      typeof window !== "undefined" &&
+        localStorage.setItem("path-types", "501");
       setVisiblePrivateKeys([...visiblePrivateKeys, false]);
       setVisiblePhrases([...visiblePhrases, false]);
     }
-    localStorage.setItem("mnemonic", mnemonic);
+    typeof window !== "undefined" && localStorage.setItem("mnemonic", mnemonic);
     window.location.reload();
   }
 
@@ -133,17 +140,19 @@ function Dashboard() {
       (w) => w.publicKey !== wallet.publicKey
     );
     setWallets(updatedWallets);
-    localStorage.setItem("wallets", JSON.stringify(updatedWallets));
+    typeof window !== "undefined" &&
+      localStorage.setItem("wallets", JSON.stringify(updatedWallets));
     toast.success("Wallet deleted successfully");
   }
 
   function handleClearWallets() {
     setWallets([]);
-    localStorage.setItem("wallets", "");
+    typeof window !== "undefined" && localStorage.setItem("wallets", "");
     toast.success("Wallets cleared");
   }
 
-  let mnemonic = localStorage.getItem("mnemonic");
+  let mnemonic =
+    typeof window !== "undefined" && localStorage.getItem("mnemonic");
 
   return (
     <div>
