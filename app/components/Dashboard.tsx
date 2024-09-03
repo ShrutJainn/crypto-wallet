@@ -192,16 +192,16 @@ function Dashboard() {
           )}
         </div>
       ) : (
-        <div className=" flex flex-col gap-2">
+        <div className=" h-full flex flex-col gap-2">
           <h1 className=" font-extrabold text-5xl">Secret Recovery Phrase</h1>
-          <p className=" font-semibold text-slate-300 text-xl mb-2">
+          <p className=" font-semibold  text-xl mb-2">
             Save these words in a safe place
           </p>
           <div className=" w-full flex gap-3">
             <input
               type="password"
               placeholder="Enter your secret phrase(or keep it empty to generate one)"
-              className=" w-[75%] bg-transparent p-3 border rounded-lg"
+              className=" w-[75%]  p-3 border rounded-lg"
               value={mnemonicInput}
               onChange={(e) => setMnemonicInput(e.target.value)}
             />
